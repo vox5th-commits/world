@@ -10,19 +10,16 @@
     </style>
 </head>
 <body class="bg-gray-950 text-gray-100 min-h-screen font-sans pb-24">
-
     <header class="sticky top-0 bg-gray-900/90 backdrop-blur border-b border-gray-800 py-4 px-4 z-50">
         <div class="max-w-md mx-auto flex items-center justify-between">
             <h1 class="text-xl font-black text-amber-500 tracking-tight">🏆 2026 월드컵 승부예측</h1>
             <button id="musicBtn" onclick="toggleMusic()" class="text-2xl px-2 py-1 bg-gray-800/80 rounded-full border border-gray-700 active:bg-gray-700 transition">🎵</button>
         </div>
     </header>
-
     <main class="max-w-md mx-auto px-4 mt-6">
         <section id="tab-predict" class="tab-content space-y-6">
             <div class="bg-gray-900 p-5 rounded-2xl border border-gray-800 shadow-xl">
                 <img src="group-photo.jpg" alt="우리 모임 사진" class="w-full aspect-video object-cover rounded-2xl border border-gray-800 mb-5 shadow-lg">
-
                 <h2 class="text-lg font-bold mb-4 text-white flex items-center gap-2">🎲 내 예측 제출하기</h2>
                 <form id="predictForm" class="space-y-5">
                     <div>
@@ -39,12 +36,10 @@
                             <option value="최경호">최경호</option>
                         </select>
                     </div>
-
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">우승국 예측</label>
                         <input type="text" id="winnerPredict" required class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 text-sm" placeholder="우승국을 직접 입력하세요 (예: 브라질)">
                     </div>
-
                     <div class="space-y-3 pt-2">
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">승무패 예측 (한국 기준)</label>
                         <div class="grid grid-cols-3 gap-2 mb-3">
@@ -76,9 +71,7 @@
                                 </select>
                             </div>
                         </div>
-
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-400">한국 경기 스코어 예측</label>
-
                         <div class="bg-gray-800/60 p-4 rounded-xl border border-gray-800 flex items-center justify-between gap-2">
                             <div class="w-24 text-center">
                                 <span class="text-xs text-gray-400 block font-semibold">6/12 11:00</span>
@@ -94,7 +87,6 @@
                                 <span class="text-sm font-bold text-white">체코 🇨🇿</span>
                             </div>
                         </div>
-
                         <div class="bg-gray-800/60 p-4 rounded-xl border border-gray-800 flex items-center justify-between gap-2">
                             <div class="w-24 text-center">
                                 <span class="text-xs text-gray-400 block font-semibold">6/19 10:00</span>
@@ -110,7 +102,6 @@
                                 <span class="text-sm font-bold text-white">대한민국 🇰🇷</span>
                             </div>
                         </div>
-
                         <div class="bg-gray-800/60 p-4 rounded-xl border border-gray-800 flex items-center justify-between gap-2">
                             <div class="w-24 text-center">
                                 <span class="text-xs text-gray-400 block font-semibold">6/25 10:00</span>
@@ -127,14 +118,12 @@
                             </div>
                         </div>
                     </div>
-
                     <button type="submit" class="w-full bg-amber-500 active:bg-amber-600 text-gray-950 font-black py-4 rounded-xl transition text-base shadow-lg shadow-amber-500/20 mt-4">
                         저장 및 카톡용 결과 복사
                     </button>
                 </form>
             </div>
         </section>
-
         <section id="tab-board" class="tab-content space-y-4 hidden">
             <div class="flex items-center justify-between mb-2">
                 <h2 class="text-lg font-bold text-white">📊 실시간 랭킹 & 현황</h2>
@@ -142,7 +131,6 @@
             </div>
             <div id="cardContainer" class="space-y-3"></div>
         </section>
-
         <section id="tab-admin" class="tab-content space-y-6 hidden">
             <div class="bg-gray-900 p-5 rounded-2xl border border-gray-800 shadow-xl space-y-5">
                 <h2 class="text-lg font-bold text-white border-b border-gray-800 pb-2">⚙️ 총무 관리자 메뉴</h2>
@@ -165,7 +153,6 @@
                         <input type="text" id="res_winner" placeholder="예시) 브라질" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-center font-black text-amber-400">
                     </div>
                 </div>
-
                 <div class="grid grid-cols-2 gap-3 pt-2">
                     <button onclick="importData()" class="bg-gray-800 active:bg-gray-700 text-gray-200 font-bold py-3 px-4 rounded-xl text-sm border border-gray-700">
                         친구 데이터 추가
@@ -177,7 +164,6 @@
             </div>
         </section>
     </main>
-
     <nav class="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 px-6 py-2 flex justify-around items-center z-50 shadow-2xl max-w-md mx-auto">
         <button onclick="switchTab('predict')" id="btn-predict" class="flex flex-col items-center gap-1 py-1 text-amber-500 font-bold text-xs transition">
             <span class="text-xl">🎲</span>
@@ -192,25 +178,20 @@
             <span>결과입력</span>
         </button>
     </nav>
-
-    <audio id="bgMusic" loop>
+    <audio id="bgMusic" loop autoplay>
         <source src="worldcup-bgm.mp3" type="audio/mpeg">
     </audio>
-
     <script>
         // ==================== 기존 기능 ====================
         let participants = JSON.parse(localStorage.getItem('wc_participants')) || [];
         let realResults = JSON.parse(localStorage.getItem('wc_results')) || { m1: '', m2: '', m3: '', winner: '' };
-
         document.getElementById('res_m1').value = realResults.m1;
         document.getElementById('res_m2').value = realResults.m2;
         document.getElementById('res_m3').value = realResults.m3;
         document.getElementById('res_winner').value = realResults.winner;
-
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-
             const tabs = ['predict', 'board', 'admin'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`btn-${t}`);
@@ -222,16 +203,13 @@
                     btn.classList.add('text-gray-500', 'font-medium');
                 }
             });
-
             if (tabId === 'board') renderCards();
         }
-
         function getWDL(homeScore, awayScore) {
             if (homeScore > awayScore) return 'W';
             if (homeScore < awayScore) return 'L';
             return 'D';
         }
-
         function calculateScore(p) {
             let score = 0;
             if (realResults.m1) {
@@ -252,19 +230,15 @@
             if (realResults.winner && p.winner === realResults.winner) score += 5;
             return score;
         }
-
         function renderCards() {
             const container = document.getElementById('cardContainer');
             container.innerHTML = '';
-
             const sorted = [...participants].map(p => ({...p, totalScore: calculateScore(p)}))
                                            .sort((a, b) => b.totalScore - a.totalScore);
-
             if (sorted.length === 0) {
                 container.innerHTML = `<div class="text-center py-12 text-gray-500 text-sm">등록된 예측이 없습니다.<br>첫 번째 예측을 등록해보세요!</div>`;
                 return;
             }
-
             sorted.forEach((p, index) => {
                 const card = document.createElement('div');
                 card.className = "bg-gray-900 p-4 rounded-xl border border-gray-800 shadow-md flex items-center justify-between";
@@ -273,7 +247,6 @@
                 if(index === 0) rankBadge = `<span class="text-sm mr-2">🥇</span>`;
                 if(index === 1) rankBadge = `<span class="text-sm mr-2">🥈</span>`;
                 if(index === 2) rankBadge = `<span class="text-sm mr-2">🥉</span>`;
-
                 card.innerHTML = `
                     <div class="space-y-1">
                         <div class="flex items-center">
@@ -296,7 +269,6 @@
                 container.appendChild(card);
             });
         }
-
         document.getElementById('predictForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const newData = {
@@ -312,13 +284,10 @@
                 m3_home: Number(document.getElementById('m3_home').value),
                 m3_away: Number(document.getElementById('m3_away').value)
             };
-
             const idx = participants.findIndex(p => p.name === newData.name);
             if (idx > -1) participants[idx] = newData;
             else participants.push(newData);
-
             localStorage.setItem('wc_participants', JSON.stringify(participants));
-
             const shareString = JSON.stringify(newData);
             
             if (navigator.clipboard && window.isSecureContext) {
@@ -337,7 +306,6 @@
                 switchTab('board');
             }
         });
-
         function applyResults() {
             realResults.m1 = document.getElementById('res_m1').value.trim();
             realResults.m2 = document.getElementById('res_m2').value.trim();
@@ -347,11 +315,9 @@
             alert('실제 경기 결과가 반영되어 정산되었습니다!');
             switchTab('board');
         }
-
         function importData() {
             const rawData = prompt('친구에게 받은 카톡 텍스트 데이터를 여기에 그대로 붙여넣으세요:');
             if (!rawData) return;
-
             try {
                 const parsed = JSON.parse(rawData);
                 if (!parsed.name || !parsed.winner) throw new Error();
@@ -359,7 +325,6 @@
                 const idx = participants.findIndex(p => p.name === parsed.name);
                 if (idx > -1) participants[idx] = parsed;
                 else participants.push(parsed);
-
                 localStorage.setItem('wc_participants', JSON.stringify(participants));
                 alert(`[${parsed.name}]의 예측이 정상적으로 취합되었습니다.`);
                 renderCards();
@@ -367,38 +332,44 @@
                 alert('데이터 형식이 올바르지 않습니다.');
             }
         }
-
         renderCards();
-
         // ==================== 음악 개선 버전 ====================
-        let isMusicPlaying = false;
+        let isMusicPlaying = true;
         const audio = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('musicBtn');
 
         function toggleMusic() {
             if (!audio || !musicBtn) return;
-
             if (isMusicPlaying) {
+                // 현재 재생 중 → 음악 끄기
                 audio.pause();
                 musicBtn.textContent = '🎵';
                 isMusicPlaying = false;
             } else {
+                // 현재 꺼짐 → 음악 켜기
                 audio.play().then(() => {
                     musicBtn.textContent = '🔇';
                     isMusicPlaying = true;
                 }).catch(() => {
-                    alert('브라우저가 자동재생을 막아서 음악이 안 나와요.\n버튼을 다시 눌러주세요.');
+                    alert('브라우저 정책으로 인해 자동 재생이 차단되었습니다.\n버튼을 눌러 음악을 시작해주세요.');
+                    musicBtn.textContent = '🎵';
+                    isMusicPlaying = false;
                 });
             }
         }
 
-        // 페이지 로드 시 자동 재생 시도
+        // 페이지 로드 시 음악 자동 재생 시도 (기본 ON)
         window.addEventListener('load', () => {
             if (audio && musicBtn) {
+                audio.volume = 0.55; // 배경음악 볼륨 조절 (너무 크지 않게)
+                // 기본 UI를 '재생 중' 상태로 설정
+                musicBtn.textContent = '🔇';
+                isMusicPlaying = true;
+                // 자동 재생 시도
                 audio.play().then(() => {
-                    musicBtn.textContent = '🔇';
-                    isMusicPlaying = true;
+                    // 성공 시 그대로 유지
                 }).catch(() => {
+                    // 실패 시 (대부분 모바일에서 발생) UI를 재생 대기 상태로 변경
                     musicBtn.textContent = '🎵';
                     isMusicPlaying = false;
                 });
