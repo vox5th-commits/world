@@ -135,7 +135,7 @@
         <section id="tab-board" class="tab-content space-y-4 hidden">
             <div class="flex items-center justify-between mb-2">
                 <h2 class="text-lg font-bold text-white">📊 실시간 랭킹 & 현황</h2>
-                <span class="text-xs text-gray-400 font-medium">*정확히 적중 시 3점 / 승무패만 적중 시 1점</span>
+                <span class="text-xs text-gray-400 font-medium">*스코어 정확 3점 + 승무패 적중 +1점 (경기당 최대 4점)</span>
             </div>
             <div id="cardContainer" class="space-y-3"></div>
         </section>
@@ -265,22 +265,37 @@
 
         function calculateScore(p) {
             let score = 0;
+
+            // 1경기 (체코전)
             if (realResults.m1) {
                 const [rHome, rAway] = realResults.m1.split(':').map(Number);
-                if (p.m1_home === rHome && p.m1_away === rAway) score += 3;
-                else if (getWDL(p.m1_home, p.m1_away) === getWDL(rHome, rAway)) score += 1;
+                const isExact1 = (p.m1_home === rHome && p.m1_away === rAway);
+                const isWDL1 = (getWDL(p.m1_home, p.m1_away) === getWDL(rHome, rAway));
+                if (isExact1) score += 3;
+                if (isWDL1) score += 1;
             }
+
+            // 2경기 (멕시코전)
             if (realResults.m2) {
                 const [rHome, rAway] = realResults.m2.split(':').map(Number);
-                if (p.m2_home === rHome && p.m2_away === rAway) score += 3;
-                else if (getWDL(p.m2_home, p.m2_away) === getWDL(rHome, rAway)) score += 1;
+                const isExact2 = (p.m2_home === rHome && p.m2_away === rAway);
+                const isWDL2 = (getWDL(p.m2_home, p.m2_away) === getWDL(rHome, rAway));
+                if (isExact2) score += 3;
+                if (isWDL2) score += 1;
             }
+
+            // 3경기 (남아공전)
             if (realResults.m3) {
                 const [rHome, rAway] = realResults.m3.split(':').map(Number);
-                if (p.m3_home === rHome && p.m3_away === rAway) score += 3;
-                else if (getWDL(p.m3_home, p.m3_away) === getWDL(rHome, rAway)) score += 1;
+                const isExact3 = (p.m3_home === rHome && p.m3_away === rAway);
+                const isWDL3 = (getWDL(p.m3_home, p.m3_away) === getWDL(rHome, rAway));
+                if (isExact3) score += 3;
+                if (isWDL3) score += 1;
             }
-            if (realResults.winner && p.winner === realResults.winner) score += 5;
+
+            // 우승국은 별도 관리 (점수 제외)
+            // if (realResults.winner && p.winner === realResults.winner) score += 5;
+
             return score;
         }
 
@@ -310,11 +325,11 @@
                             <span class="text-xs bg-gray-800 text-amber-400 px-2 py-0.5 rounded-full ml-2 font-medium">${p.winner} 👑</span>
                         </div>
                         <div class="text-xs text-gray-400 flex gap-2 pt-1">
-                            <span>체코전 <b class="text-gray-200">${p.m1_home}:${p.m1_away}</b></span>
+                            <span>체코전 <b class="text-gray-200">${p.m1_home}:${p.m1_away}</b> <span class="font-bold ${getWDL(p.m1_home, p.m1_away)==='W' ? 'text-emerald-400' : getWDL(p.m1_home, p.m1_away)==='D' ? 'text-yellow-400' : 'text-red-400'}">(${getWDL(p.m1_home, p.m1_away)==='W' ? '승' : getWDL(p.m1_home, p.m1_away)==='D' ? '무' : '패'})</span></span>
                             <span class="text-gray-700">|</span>
-                            <span>멕시코전 <b class="text-gray-200">${p.m2_home}:${p.m2_away}</b></span>
+                            <span>멕시코전 <b class="text-gray-200">${p.m2_home}:${p.m2_away}</b> <span class="font-bold ${getWDL(p.m2_home, p.m2_away)==='W' ? 'text-emerald-400' : getWDL(p.m2_home, p.m2_away)==='D' ? 'text-yellow-400' : 'text-red-400'}">(${getWDL(p.m2_home, p.m2_away)==='W' ? '승' : getWDL(p.m2_home, p.m2_away)==='D' ? '무' : '패'})</span></span>
                             <span class="text-gray-700">|</span>
-                            <span>남아공전 <b class="text-gray-200">${p.m3_home}:${p.m3_away}</b></span>
+                            <span>남아공전 <b class="text-gray-200">${p.m3_home}:${p.m3_away}</b> <span class="font-bold ${getWDL(p.m3_home, p.m3_away)==='W' ? 'text-emerald-400' : getWDL(p.m3_home, p.m3_away)==='D' ? 'text-yellow-400' : 'text-red-400'}">(${getWDL(p.m3_home, p.m3_away)==='W' ? '승' : getWDL(p.m3_home, p.m3_away)==='D' ? '무' : '패'})</span></span>
                         </div>
                     </div>
                     <div class="text-right">
