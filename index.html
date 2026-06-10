@@ -6,7 +6,6 @@
     <title>2026 월드컵 우리끼리 토토</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        /* 모바일 터치 시 파란 하이라이트 제거 */
         -webkit-tap-highlight-color: transparent;
     </style>
 </head>
@@ -20,10 +19,8 @@
     </header>
 
     <main class="max-w-md mx-auto px-4 mt-6">
-        
         <section id="tab-predict" class="tab-content space-y-6">
             <div class="bg-gray-900 p-5 rounded-2xl border border-gray-800 shadow-xl">
-                <!-- 모임 사진: 나중에 group-photo.jpg 로 교체하세요. 지금은 demo 이미지 -->
                 <img src="group-photo.jpg" alt="우리 모임 사진" class="w-full aspect-video object-cover rounded-2xl border border-gray-800 mb-5 shadow-lg">
 
                 <h2 class="text-lg font-bold mb-4 text-white flex items-center gap-2">🎲 내 예측 제출하기</h2>
@@ -81,7 +78,7 @@
                         </div>
 
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-400">한국 경기 스코어 예측</label>
-                        
+
                         <div class="bg-gray-800/60 p-4 rounded-xl border border-gray-800 flex items-center justify-between gap-2">
                             <div class="w-24 text-center">
                                 <span class="text-xs text-gray-400 block font-semibold">6/12 11:00</span>
@@ -143,8 +140,7 @@
                 <h2 class="text-lg font-bold text-white">📊 실시간 랭킹 & 현황</h2>
                 <span class="text-xs text-gray-400 font-medium">*정확히 적중 시 3점 / 승무패만 적중 시 1점</span>
             </div>
-            <div id="cardContainer" class="space-y-3">
-                </div>
+            <div id="cardContainer" class="space-y-3"></div>
         </section>
 
         <section id="tab-admin" class="tab-content space-y-6 hidden">
@@ -180,7 +176,6 @@
                 </div>
             </div>
         </section>
-
     </main>
 
     <nav class="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 px-6 py-2 flex justify-around items-center z-50 shadow-2xl max-w-md mx-auto">
@@ -198,23 +193,24 @@
         </button>
     </nav>
 
+    <audio id="bgMusic" loop>
+        <source src="worldcup-bgm.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
-        // 상태 데이터 관리
+        // ==================== 기존 기능 ====================
         let participants = JSON.parse(localStorage.getItem('wc_participants')) || [];
         let realResults = JSON.parse(localStorage.getItem('wc_results')) || { m1: '', m2: '', m3: '', winner: '' };
 
-        // 초기 결과값 로드
         document.getElementById('res_m1').value = realResults.m1;
         document.getElementById('res_m2').value = realResults.m2;
         document.getElementById('res_m3').value = realResults.m3;
         document.getElementById('res_winner').value = realResults.winner;
 
-        // 모바일 탭 전환 함수
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
 
-            // 내비게이션 아이콘 스타일 변경
             const tabs = ['predict', 'board', 'admin'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`btn-${t}`);
@@ -236,7 +232,6 @@
             return 'D';
         }
 
-        // 개별 유저 점수 계산
         function calculateScore(p) {
             let score = 0;
             if (realResults.m1) {
@@ -258,7 +253,6 @@
             return score;
         }
 
-        // 모바일 카드형 현황판 렌더링
         function renderCards() {
             const container = document.getElementById('cardContainer');
             container.innerHTML = '';
@@ -275,7 +269,6 @@
                 const card = document.createElement('div');
                 card.className = "bg-gray-900 p-4 rounded-xl border border-gray-800 shadow-md flex items-center justify-between";
                 
-                // 순위별 메달 표기
                 let rankBadge = `<span class="text-xs font-bold text-gray-500 mr-2">${index + 1}위</span>`;
                 if(index === 0) rankBadge = `<span class="text-sm mr-2">🥇</span>`;
                 if(index === 1) rankBadge = `<span class="text-sm mr-2">🥈</span>`;
@@ -304,7 +297,6 @@
             });
         }
 
-        // 폼 제출 핸들러 (입력 후 데이터 복사)
         document.getElementById('predictForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const newData = {
@@ -327,41 +319,35 @@
 
             localStorage.setItem('wc_participants', JSON.stringify(participants));
 
-            // 클립보드 복사 프로토콜
             const shareString = JSON.stringify(newData);
             
-            // 모바일 브라우저 호환성을 위한 복사 로직
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(shareString).then(() => {
-                    alert(`[${newData.name}]님 저장 완료!\n\n카톡 전송용 데이터가 복사되었습니다. 총무 단톡방에 그대로 붙여넣어(포커스 후 붙여넣기) 주세요!`);
+                    alert(`[${newData.name}]님 저장 완료!\n\n카톡 전송용 데이터가 복사되었습니다.`);
                     switchTab('board');
                 });
             } else {
-                // Fallback 구조
                 const textArea = document.createElement("textarea");
                 textArea.value = shareString;
                 document.body.appendChild(textArea);
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
-                alert(`[${newData.name}]님 저장 완료!\n\n카톡 전송용 데이터가 복사되었습니다. 총무 단톡방에 그대로 붙여넣어 주세요!`);
+                alert(`[${newData.name}]님 저장 완료!\n\n카톡 전송용 데이터가 복사되었습니다.`);
                 switchTab('board');
             }
         });
 
-        // 결과 반영 (총무용)
         function applyResults() {
             realResults.m1 = document.getElementById('res_m1').value.trim();
             realResults.m2 = document.getElementById('res_m2').value.trim();
             realResults.m3 = document.getElementById('res_m3').value.trim();
             realResults.winner = document.getElementById('res_winner').value.trim();
-
             localStorage.setItem('wc_results', JSON.stringify(realResults));
             alert('실제 경기 결과가 반영되어 정산되었습니다!');
             switchTab('board');
         }
 
-        // 친구 데이터 파싱 및 로드 (총무용)
         function importData() {
             const rawData = prompt('친구에게 받은 카톡 텍스트 데이터를 여기에 그대로 붙여넣으세요:');
             if (!rawData) return;
@@ -378,37 +364,46 @@
                 alert(`[${parsed.name}]의 예측이 정상적으로 취합되었습니다.`);
                 renderCards();
             } catch (err) {
-                alert('데이터 형식이 올바르지 않습니다. 친구가 복사해 준 문자열 전체를 정확히 입력해주세요.');
+                alert('데이터 형식이 올바르지 않습니다.');
             }
         }
 
-        // 앱 초기 로드 시 현황판 기본 렌더링
         renderCards();
 
-        // 배경음악 토글 (간단 구현)
+        // ==================== 음악 개선 버전 ====================
         let isMusicPlaying = false;
+        const audio = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+
         function toggleMusic() {
-            const audio = document.getElementById('bgMusic');
-            const btn = document.getElementById('musicBtn');
-            if (!audio || !btn) return;
+            if (!audio || !musicBtn) return;
+
             if (isMusicPlaying) {
                 audio.pause();
-                btn.textContent = '🎵';
+                musicBtn.textContent = '🎵';
                 isMusicPlaying = false;
             } else {
-                audio.play().catch(() => {});
-                btn.textContent = '🔇';
-                isMusicPlaying = true;
+                audio.play().then(() => {
+                    musicBtn.textContent = '🔇';
+                    isMusicPlaying = true;
+                }).catch(() => {
+                    alert('브라우저가 자동재생을 막아서 음악이 안 나와요.\n버튼을 다시 눌러주세요.');
+                });
             }
         }
 
-        // 오디오 엘리먼트 (배경음악)
-        // 사용법: GitHub repo에 worldcup-bgm.mp3 파일을 넣으세요. (루프 재생)
+        // 페이지 로드 시 자동 재생 시도
+        window.addEventListener('load', () => {
+            if (audio && musicBtn) {
+                audio.play().then(() => {
+                    musicBtn.textContent = '🔇';
+                    isMusicPlaying = true;
+                }).catch(() => {
+                    musicBtn.textContent = '🎵';
+                    isMusicPlaying = false;
+                });
+            }
+        });
     </script>
-
-    <audio id="bgMusic" loop>
-        <source src="worldcup-bgm.mp3" type="audio/mpeg">
-        <!-- 배경음악 파일이 없으면 소리 안 남. mp3 파일을 repo에 추가하세요 -->
-    </audio>
 </body>
 </html>
