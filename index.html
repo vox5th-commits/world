@@ -43,8 +43,11 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">우승국 예측</label>
-                        <input type="text" id="winnerPredict" required class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 text-sm" placeholder="우승국을 직접 입력하세요 (예: 브라질)">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2 flex items-center gap-1">
+                            <span>우승국 예측</span>
+                            <span id="lockBadge_winner" class="hidden text-[9px] text-red-400 font-bold bg-red-950/80 px-1 rounded border border-red-900/50">마감</span>
+                        </label>
+                        <input type="text" id="winnerPredict" required class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 text-sm transition disabled:opacity-40 disabled:cursor-not-allowed" placeholder="우승국을 직접 입력하세요 (예: 브라질)">
                     </div>
                     <div class="space-y-3 pt-2">
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">승무패 예측 (한국 기준)</label>
@@ -177,9 +180,12 @@
                         </div>
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-bold text-gray-400 mb-1">최종 우승국 결과</label>
-                        <input type="text" id="res_winner" placeholder="예시) 브라질" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-center font-black text-amber-400">
+                    <div class="bg-gray-800/40 p-3 rounded-xl border border-gray-800/80 space-y-2">
+                        <label class="block text-xs font-bold text-gray-400">최종 우승국 결과</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="res_winner" placeholder="예시) 브라질" class="flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-center font-black text-amber-400">
+                            <button type="button" onclick="toggleLock('winner')" id="lockBtn_winner" class="px-3 rounded-xl font-bold text-xs transition bg-gray-800 border border-gray-700 text-gray-300 whitespace-nowrap">🔒 마감하기</button>
+                        </div>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3 pt-2">
@@ -233,7 +239,7 @@
         const ADMIN_PASSWORD = "1234";
 
         let participants = [];
-        let realResults = { m1: '', m2: '', m3: '', winner: '', m1_locked: false, m2_locked: false, m3_locked: false };
+        let realResults = { m1: '', m2: '', m3: '', winner: '', m1_locked: false, m2_locked: false, m3_locked: false, winner_locked: false };
 
         // ==================== 실시간 데이터 수신 및 동기화 ====================
         predictionsRef.on('value', (snapshot) => {
@@ -256,6 +262,7 @@
                 realResults.m1_locked = data.m1_locked || false;
                 realResults.m2_locked = data.m2_locked || false;
                 realResults.m3_locked = data.m3_locked || false;
+                realResults.winner_locked = data.winner_locked || false;
             }
             
             const m1 = document.getElementById('res_m1');
@@ -302,7 +309,7 @@
         });
 
         function updateAdminLockButtons() {
-            ['m1', 'm2', 'm3'].forEach(m => {
+            ['m1', 'm2', 'm3', 'winner'].forEach(m => {
                 const btn = document.getElementById(`lockBtn_${m}`);
                 if (!btn) return;
                 const isLocked = realResults[`${m}_locked`] || false;
@@ -317,6 +324,7 @@
         }
 
         function updatePredictFormLockStates() {
+            // 경기별 마감 상태 연동
             ['m1', 'm2', 'm3'].forEach(m => {
                 const isLocked = realResults[`${m}_locked`] || false;
                 const wdl = document.getElementById(`${m}_wdl`);
@@ -333,6 +341,17 @@
                     else badge.classList.add('hidden');
                 }
             });
+
+            // 최종 우승국 마감 상태 연동
+            const isWinnerLocked = realResults.winner_locked || false;
+            const winnerPredict = document.getElementById('winnerPredict');
+            const badgeWinner = document.getElementById('lockBadge_winner');
+            
+            if (winnerPredict) winnerPredict.disabled = isWinnerLocked;
+            if (badgeWinner) {
+                if (isWinnerLocked) badgeWinner.classList.remove('hidden');
+                else badgeWinner.classList.add('hidden');
+            }
         }
 
         function toggleLock(matchKey) {
@@ -369,30 +388,28 @@
             if (tabId === 'board') renderCards();
         }
 
-        // ==================== [핵심수정] 교차 보험 배팅을 위한 독립 채점 로직 ====================
+        function getWDL(homeScore, awayScore) {
+            if (homeScore > awayScore) return 'W';
+            if (homeScore < awayScore) return 'L';
+            return 'D';
+        }
+
         function calculateScore(p) {
             let score = 0;
 
-            // 1경기 (체코전) -> UI 구조: 대한민국(Home) : 체코(Away)
             if (realResults.m1) {
                 const [rHome, rAway] = realResults.m1.split(':').map(Number);
                 const isExact1 = (p.m1_home === rHome && p.m1_away === rAway);
-                
-                // 실제 스코어 결과 분석 (한국 기준)
                 const realWDL1 = rHome > rAway ? '승' : (rHome === rAway ? '무' : '패');
-                // 드롭다운 예측 매칭 분리
                 const isWDL1 = (p.m1_wdl === realWDL1);
 
                 if (isExact1) score += 3;
                 if (isWDL1) score += 1;
             }
 
-            // 2경기 (멕시코전) -> UI 구조: 멕시코(Home) : 대한민국(Away)
             if (realResults.m2) {
                 const [rHome, rAway] = realResults.m2.split(':').map(Number);
                 const isExact2 = (p.m2_home === rHome && p.m2_away === rAway);
-                
-                // 실제 스코어 결과 분석 (rAway가 한국 점수이므로 반대로 연산)
                 const realWDL2 = rAway > rHome ? '승' : (rAway === rHome ? '무' : '패');
                 const isWDL2 = (p.m2_wdl === realWDL2);
 
@@ -400,12 +417,9 @@
                 if (isWDL2) score += 1;
             }
 
-            // 3경기 (남아공전) -> UI 구조: 남아공(Home) : 대한민국(Away)
             if (realResults.m3) {
                 const [rHome, rAway] = realResults.m3.split(':').map(Number);
                 const isExact3 = (p.m3_home === rHome && p.m3_away === rAway);
-                
-                // 실제 스코어 결과 분석 (rAway가 한국 점수)
                 const realWDL3 = rAway > rHome ? '승' : (rAway === rHome ? '무' : '패');
                 const isWDL3 = (p.m3_wdl === realWDL3);
 
@@ -416,7 +430,6 @@
             return score;
         }
 
-        // ==================== [핵심수정] 드롭다운과 스코어를 동시 시각화하는 현황판 ====================
         function renderCards() {
             const container = document.getElementById('cardContainer');
             if (!container) return;
@@ -461,7 +474,6 @@
             });
         }
 
-        // ==================== 예측 제출 (마감 우회 방어 로직 포함) ====================
         document.getElementById('predictForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const name = document.getElementById('userName').value.trim();
@@ -469,7 +481,7 @@
 
             const newData = {
                 name: name,
-                winner: document.getElementById('winnerPredict').value,
+                winner: realResults.winner_locked ? (existing.winner || '') : document.getElementById('winnerPredict').value,
                 m1_wdl: realResults.m1_locked ? (existing.m1_wdl || '') : document.getElementById('m1_wdl').value,
                 m2_wdl: realResults.m2_locked ? (existing.m2_wdl || '') : document.getElementById('m2_wdl').value,
                 m3_wdl: realResults.m3_locked ? (existing.m3_wdl || '') : document.getElementById('m3_wdl').value,
@@ -506,7 +518,8 @@
                 winner: document.getElementById('res_winner').value.trim(),
                 m1_locked: realResults.m1_locked || false,
                 m2_locked: realResults.m2_locked || false,
-                m3_locked: realResults.m3_locked || false
+                m3_locked: realResults.m3_locked || false,
+                winner_locked: realResults.winner_locked || false
             };
 
             adminRef.set(updatedResults)
