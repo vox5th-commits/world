@@ -50,11 +50,11 @@
                         <input type="text" id="winnerPredict" required class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 text-sm transition disabled:opacity-40 disabled:cursor-not-allowed" placeholder="우승국을 직접 입력하세요 (예: 브라질)">
                     </div>
                     <div class="space-y-3 pt-2">
-                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">승무패 예측 (한국 기준)</label>
-                        <div class="grid grid-cols-3 gap-2 mb-3">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">승무패 예측</label>
+                        <div class="grid grid-cols-2 gap-2 mb-3">
                             <div>
                                 <div class="text-[10px] text-center text-gray-400 mb-0.5 flex items-center justify-center gap-0.5">
-                                    <span>일본 vs 스웨덴</span>
+                                    <span>일본 vs 스웨덴 (1차전)</span>
                                     <span id="lockBadge_m1" class="hidden text-[9px] text-red-400 font-bold bg-red-950/80 px-1 rounded border border-red-900/50">마감</span>
                                 </div>
                                 <select id="m1_wdl" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-2 py-2 text-center text-sm focus:outline-none focus:border-amber-500 transition disabled:opacity-40 disabled:cursor-not-allowed">
@@ -66,22 +66,10 @@
                             </div>
                             <div>
                                 <div class="text-[10px] text-center text-gray-400 mb-0.5 flex items-center justify-center gap-0.5">
-                                    <span>네덜란드 vs 튀니지</span>
+                                    <span>네덜란드 vs 튀니지 (2차전)</span>
                                     <span id="lockBadge_m2" class="hidden text-[9px] text-red-400 font-bold bg-red-950/80 px-1 rounded border border-red-900/50">마감</span>
                                 </div>
                                 <select id="m2_wdl" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-2 py-2 text-center text-sm focus:outline-none focus:border-amber-500 transition disabled:opacity-40 disabled:cursor-not-allowed">
-                                    <option value="">선택</option>
-                                    <option value="승">승</option>
-                                    <option value="무">무</option>
-                                    <option value="패">패</option>
-                                </select>
-                            </div>
-                            <div>
-                                <div class="text-[10px] text-center text-gray-400 mb-0.5 flex items-center justify-center gap-0.5">
-                                    <span>vs 남아공 (3차전)</span>
-                                    <span id="lockBadge_m3" class="hidden text-[9px] text-red-400 font-bold bg-red-950/80 px-1 rounded border border-red-900/50">마감</span>
-                                </div>
-                                <select id="m3_wdl" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-2 py-2 text-center text-sm focus:outline-none focus:border-amber-500 transition disabled:opacity-40 disabled:cursor-not-allowed">
                                     <option value="">선택</option>
                                     <option value="승">승</option>
                                     <option value="무">무</option>
@@ -108,7 +96,7 @@
                         <div class="bg-gray-800/60 p-4 rounded-xl border border-gray-800 flex items-center justify-between gap-2">
                             <div class="w-24 text-center">
                                 <span class="text-xs text-gray-400 block font-semibold">6/26 08:00</span>
-                                <span class="text-sm font-bold text-white">튀니지 🇹🇳</span>
+                                <span class="text-sm font-bold text-white">네덜란드 🇳🇱</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <input type="number" inputmode="numeric" id="m2_home" min="0" value="0" class="w-12 h-10 bg-gray-900 text-center rounded-lg font-black text-lg border border-gray-700 transition disabled:opacity-40 disabled:cursor-not-allowed">
@@ -117,22 +105,7 @@
                             </div>
                             <div class="w-24 text-center">
                                 <span class="text-xs text-gray-400 block font-semibold">2차전</span>
-                                <span class="text-sm font-bold text-white">일본 🇯🇵</span>
-                            </div>
-                        </div>
-                        <div class="bg-gray-800/60 p-4 rounded-xl border border-gray-800 flex items-center justify-between gap-2">
-                            <div class="w-24 text-center">
-                                <span class="text-xs text-gray-400 block font-semibold">6/26 08:00</span>
-                                <span class="text-sm font-bold text-white">네덜란드 🇳🇱</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <input type="number" inputmode="numeric" id="m3_home" min="0" value="0" class="w-12 h-10 bg-gray-900 text-center rounded-lg font-black text-lg border border-gray-700 transition disabled:opacity-40 disabled:cursor-not-allowed">
-                                <span class="text-gray-600 font-bold">:</span>
-                                <input type="number" inputmode="numeric" id="m3_away" min="0" value="0" class="w-12 h-10 bg-gray-900 text-center rounded-lg font-black text-lg border border-gray-700 transition disabled:opacity-40 disabled:cursor-not-allowed">
-                            </div>
-                            <div class="w-24 text-center">
-                                <span class="text-xs text-gray-400 block font-semibold">3차전</span>
-                                <span class="text-sm font-bold text-white">일본 🇯🇵</span>
+                                <span class="text-sm font-bold text-white">튀니지 🇹🇳</span>
                             </div>
                         </div>
                     </div>
@@ -169,14 +142,6 @@
                         <div class="flex gap-2">
                             <input type="text" id="res_m2" placeholder="예시) 1:1" class="flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-center font-black text-amber-400">
                             <button type="button" onclick="toggleLock('m2')" id="lockBtn_m2" class="px-3 rounded-xl font-bold text-xs transition bg-gray-800 border border-gray-700 text-gray-300 whitespace-nowrap">🔒 마감하기</button>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-gray-800/40 p-3 rounded-xl border border-gray-800/80 space-y-2">
-                        <label class="block text-xs font-bold text-gray-400">3차전 결과 (추가 경기)</label>
-                        <div class="flex gap-2">
-                            <input type="text" id="res_m3" placeholder="예시) 0:2" class="flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-center font-black text-amber-400">
-                            <button type="button" onclick="toggleLock('m3')" id="lockBtn_m3" class="px-3 rounded-xl font-bold text-xs transition bg-gray-800 border border-gray-700 text-gray-300 whitespace-nowrap">🔒 마감하기</button>
                         </div>
                     </div>
 
@@ -239,7 +204,7 @@
         const ADMIN_PASSWORD = "1234";
 
         let participants = [];
-        let realResults = { m1: '', m2: '', m3: '', winner: '', m1_locked: false, m2_locked: false, m3_locked: false, winner_locked: false };
+        let realResults = { m1: '', m2: '', winner: '', m1_locked: false, m2_locked: false, winner_locked: false };
 
         // ==================== 실시간 데이터 수신 및 동기화 ====================
         predictionsRef.on('value', (snapshot) => {
@@ -257,21 +222,17 @@
                 const data = snapshot.val();
                 realResults.m1 = data.m1 || '';
                 realResults.m2 = data.m2 || '';
-                realResults.m3 = data.m3 || '';
                 realResults.winner = data.winner || '';
                 realResults.m1_locked = data.m1_locked || false;
                 realResults.m2_locked = data.m2_locked || false;
-                realResults.m3_locked = data.m3_locked || false;
                 realResults.winner_locked = data.winner_locked || false;
             }
             
             const m1 = document.getElementById('res_m1');
             const m2 = document.getElementById('res_m2');
-            const m3 = document.getElementById('res_m3');
             const winner = document.getElementById('res_winner');
             if (m1) m1.value = realResults.m1;
             if (m2) m2.value = realResults.m2;
-            if (m3) m3.value = realResults.m3;
             if (winner) winner.value = realResults.winner;
 
             updateAdminLockButtons();
@@ -287,29 +248,23 @@
                 document.getElementById('winnerPredict').value = p.winner || '';
                 document.getElementById('m1_wdl').value = p.m1_wdl || '';
                 document.getElementById('m2_wdl').value = p.m2_wdl || '';
-                document.getElementById('m3_wdl').value = p.m3_wdl || '';
                 document.getElementById('m1_home').value = p.m1_home !== undefined ? p.m1_home : 0;
                 document.getElementById('m1_away').value = p.m1_away !== undefined ? p.m1_away : 0;
                 document.getElementById('m2_home').value = p.m2_home !== undefined ? p.m2_home : 0;
                 document.getElementById('m2_away').value = p.m2_away !== undefined ? p.m2_away : 0;
-                document.getElementById('m3_home').value = p.m3_home !== undefined ? p.m3_home : 0;
-                document.getElementById('m3_away').value = p.m3_away !== undefined ? p.m3_away : 0;
             } else {
                 document.getElementById('winnerPredict').value = '';
                 document.getElementById('m1_wdl').value = '';
                 document.getElementById('m2_wdl').value = '';
-                document.getElementById('m3_wdl').value = '';
                 document.getElementById('m1_home').value = 0;
                 document.getElementById('m1_away').value = 0;
                 document.getElementById('m2_home').value = 0;
                 document.getElementById('m2_away').value = 0;
-                document.getElementById('m3_home').value = 0;
-                document.getElementById('m3_away').value = 0;
             }
         });
 
         function updateAdminLockButtons() {
-            ['m1', 'm2', 'm3', 'winner'].forEach(m => {
+            ['m1', 'm2', 'winner'].forEach(m => {
                 const btn = document.getElementById(`lockBtn_${m}`);
                 if (!btn) return;
                 const isLocked = realResults[`${m}_locked`] || false;
@@ -324,8 +279,7 @@
         }
 
         function updatePredictFormLockStates() {
-            // 경기별 마감 상태 연동
-            ['m1', 'm2', 'm3'].forEach(m => {
+            ['m1', 'm2'].forEach(m => {
                 const isLocked = realResults[`${m}_locked`] || false;
                 const wdl = document.getElementById(`${m}_wdl`);
                 const home = document.getElementById(`${m}_home`);
@@ -342,7 +296,6 @@
                 }
             });
 
-            // 최종 우승국 마감 상태 연동
             const isWinnerLocked = realResults.winner_locked || false;
             const winnerPredict = document.getElementById('winnerPredict');
             const badgeWinner = document.getElementById('lockBadge_winner');
@@ -410,21 +363,11 @@
             if (realResults.m2) {
                 const [rHome, rAway] = realResults.m2.split(':').map(Number);
                 const isExact2 = (p.m2_home === rHome && p.m2_away === rAway);
-                const realWDL2 = rAway > rHome ? '승' : (rAway === rHome ? '무' : '패');
+                const realWDL2 = rHome > rAway ? '승' : (rHome === rAway ? '무' : '패');
                 const isWDL2 = (p.m2_wdl === realWDL2);
 
                 if (isExact2) score += 3;
                 if (isWDL2) score += 1;
-            }
-
-            if (realResults.m3) {
-                const [rHome, rAway] = realResults.m3.split(':').map(Number);
-                const isExact3 = (p.m3_home === rHome && p.m3_away === rAway);
-                const realWDL3 = rAway > rHome ? '승' : (rAway === rHome ? '무' : '패');
-                const isWDL3 = (p.m3_wdl === realWDL3);
-
-                if (isExact3) score += 3;
-                if (isWDL3) score += 1;
             }
 
             return score;
@@ -462,8 +405,6 @@
                             <span>일본 vs 스웨덴 <span class="font-bold ${wdlColor(p.m1_wdl)}">[${p.m1_wdl || '미선택'}]</span> <b class="text-gray-200">${p.m1_home}:${p.m1_away}</b></span>
                             <span class="text-gray-700">|</span>
                             <span>네덜란드 vs 튀니지 <span class="font-bold ${wdlColor(p.m2_wdl)}">[${p.m2_wdl || '미선택'}]</span> <b class="text-gray-200">${p.m2_home}:${p.m2_away}</b></span>
-                            <span class="text-gray-700">|</span>
-                            <span>추가 경기 <span class="font-bold ${wdlColor(p.m3_wdl)}">[${p.m3_wdl || '미선택'}]</span> <b class="text-gray-200">${p.m3_home}:${p.m3_away}</b></span>
                         </div>
                     </div>
                     <div class="text-right">
@@ -484,13 +425,10 @@
                 winner: realResults.winner_locked ? (existing.winner || '') : document.getElementById('winnerPredict').value,
                 m1_wdl: realResults.m1_locked ? (existing.m1_wdl || '') : document.getElementById('m1_wdl').value,
                 m2_wdl: realResults.m2_locked ? (existing.m2_wdl || '') : document.getElementById('m2_wdl').value,
-                m3_wdl: realResults.m3_locked ? (existing.m3_wdl || '') : document.getElementById('m3_wdl').value,
                 m1_home: realResults.m1_locked ? (existing.m1_home !== undefined ? existing.m1_home : 0) : Number(document.getElementById('m1_home').value),
                 m1_away: realResults.m1_locked ? (existing.m1_away !== undefined ? existing.m1_away : 0) : Number(document.getElementById('m1_away').value),
                 m2_home: realResults.m2_locked ? (existing.m2_home !== undefined ? existing.m2_home : 0) : Number(document.getElementById('m2_home').value),
                 m2_away: realResults.m2_locked ? (existing.m2_home !== undefined ? existing.m2_home : 0) : Number(document.getElementById('m2_away').value),
-                m3_home: realResults.m3_locked ? (existing.m3_home !== undefined ? existing.m3_home : 0) : Number(document.getElementById('m3_home').value),
-                m3_away: realResults.m3_locked ? (existing.m3_away !== undefined ? existing.m3_away : 0) : Number(document.getElementById('m3_away').value),
                 timestamp: Date.now()
             };
 
@@ -514,11 +452,9 @@
             const updatedResults = {
                 m1: document.getElementById('res_m1').value.trim(),
                 m2: document.getElementById('res_m2').value.trim(),
-                m3: document.getElementById('res_m3').value.trim(),
                 winner: document.getElementById('res_winner').value.trim(),
                 m1_locked: realResults.m1_locked || false,
                 m2_locked: realResults.m2_locked || false,
-                m3_locked: realResults.m3_locked || false,
                 winner_locked: realResults.winner_locked || false
             };
 
